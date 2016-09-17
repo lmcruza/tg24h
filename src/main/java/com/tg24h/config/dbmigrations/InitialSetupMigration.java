@@ -18,12 +18,17 @@ public class InitialSetupMigration {
 
     private Map<String, String>[] authoritiesUser = new Map[]{new HashMap<>()};
 
-    private Map<String, String>[] authoritiesAdminAndUser = new Map[]{new HashMap<>(), new HashMap<>()};
+    private Map<String, String>[] authoritiesAdminAndUser = new Map[]{new HashMap<>(), new HashMap<>(), new HashMap<>()};
+
+    private Map<String, String>[] authoritiesManagerAndUser = new Map[]{new HashMap<>(), new HashMap<>()};
 
     {
         authoritiesUser[0].put("_id", "ROLE_USER");
         authoritiesAdminAndUser[0].put("_id", "ROLE_USER");
         authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
+        authoritiesAdminAndUser[2].put("_id", "ROLE_MANAGER");
+        authoritiesManagerAndUser[0].put("_id", "ROLE_USER");
+        authoritiesManagerAndUser[1].put("_id", "ROLE_MANAGER");
     }
 
     @ChangeSet(order = "01", author = "initiator", id = "01-addAuthorities")
@@ -36,6 +41,10 @@ public class InitialSetupMigration {
         authorityCollection.insert(
             BasicDBObjectBuilder.start()
                 .add("_id", "ROLE_USER")
+                .get());
+        authorityCollection.insert(
+            BasicDBObjectBuilder.start()
+                .add("_id", "ROLE_MANAGER")
                 .get());
     }
 
@@ -98,6 +107,20 @@ public class InitialSetupMigration {
             .add("created_by", "system")
             .add("created_date", new Date())
             .add("authorities", authoritiesUser)
+            .get()
+        );
+        usersCollection.insert(BasicDBObjectBuilder.start()
+            .add("_id", "user-4")
+            .add("login", "manager")
+            .add("password", "$2a$10$JNPWNVgHePG/i1JvM3lT4.Eo34mAIav.052p7NFLU1AsAeZ5cqv0y")
+            .add("first_name", "")
+            .add("last_name", "Manager")
+            .add("email", "manager@localhost")
+            .add("activated", "true")
+            .add("lang_key", "en")
+            .add("created_by", "system")
+            .add("created_date", new Date())
+            .add("authorities", authoritiesManagerAndUser)
             .get()
         );
     }
