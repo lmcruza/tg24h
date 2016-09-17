@@ -1,0 +1,17 @@
+version: '2'
+services:
+    tg24h-app:
+        image: tg24h
+        external_links:
+            - tg24h-mongodb:mongodb
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017
+            - SPRING_DATA_MONGODB_DATABASE=tg24h
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    tg24h-mongodb:
+        extends:
+            file: mongodb.yml
+            service: tg24h-mongodb

@@ -1,0 +1,17 @@
+version: '2'
+services:
+    tg24h-mongodb:
+        container_name: tg24h-mongodb
+        image: mongo:3.3.12
+        ports:
+            - "27017:27017"
+        command: mongos --configdb tg24h-mongodb-config
+    tg24h-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    tg24h-mongodb-config:
+        image: mongo:mongo:3.3.12
+        container_name: tg24h-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

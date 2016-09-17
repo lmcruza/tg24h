@@ -1,0 +1,8 @@
+version: '2'
+services:
+    tg24h-sonar:
+        container_name: tg24h-sonar
+        image: sonarqube:5.6.1-alpine
+        ports:
+            - 9000:9000
+            - 9092:9092
